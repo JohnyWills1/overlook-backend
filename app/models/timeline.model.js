@@ -3,10 +3,23 @@ module.exports = (mongoose) => {
 		'timeline',
 		mongoose.Schema(
 			{
-				title: String,
+				title: {
+					type: String,
+					required: true,
+				},
 				description: String,
-				content: String,
+				content: [
+					{
+						image: String,
+						comment: String,
+					},
+				],
 				published: Boolean,
+				ownerId: {
+					type: String,
+					required: true,
+				},
+				contributorIds: [String],
 			},
 			{ timestamps: true }
 		)

@@ -3,6 +3,9 @@ const db = require('../models');
 const Timeline = db.timeline;
 
 // Create and Save a new Timeline
+// TODO:
+// - Add async and await to functions
+// - Add ownerID and content to new Timelines
 exports.create = (req, res) => {
 	// Validate Request
 	if (!req.body.title) {
