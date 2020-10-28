@@ -8,16 +8,15 @@ const Timeline = db.timeline;
 // - Add ownerID and content to new Timelines
 exports.create = (req, res) => {
 	// Validate Request
-	if (!req.body.title) {
-		res.status(400).send({ message: 'Content cannot be empty!' });
-		return;
+	if (!req.body.title || !req.body.description) {
+		return res.status(400).send({ message: 'Content cannot be empty!' });
 	}
 
 	// Create Timeline Object to be saved
 	const timeline = new Timeline({
 		title: req.body.title,
 		description: req.body.description,
-		content: req.body.content,
+		ownerId: req.body.ownerId,
 		published: false,
 	});
 
@@ -65,7 +64,25 @@ exports.findOne = (req, res) => {
 		})
 		.catch((err) => {
 			res.status(500).send({
-				message: err.message || 'Error retrieving Timeline with id=' + id,
+				message: err.message || 'Error retrieving Timeline with id = ' + id,
+			});
+		});
+};
+
+exports.findByTitle = (req, res) => {
+	const title = req.params.title;
+
+	Timeline.find({ title: title })
+		.then((data) => {
+			!data
+				? res.status(404).send({
+						message: 'No Timeline with the title ' + title + ' could be found.',
+				  })
+				: res.send(data);
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: err.message || 'Error retrieving Timeline with title = ' + title,
 			});
 		});
 };
