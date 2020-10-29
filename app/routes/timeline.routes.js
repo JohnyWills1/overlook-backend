@@ -14,6 +14,9 @@ module.exports = (app) => {
 	// Find All timlines in the DB
 	router.get('/', [FBAuth], timelines.findAll);
 
+	// Find All Timelines with User ID
+	router.get('/:userId', [FBAuth], timelines.findByUserId);
+
 	// Find a single Timeline with the ID defined
 	router.get('/:id', [FBAuth], timelines.findOne);
 

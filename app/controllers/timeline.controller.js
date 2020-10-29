@@ -2,10 +2,8 @@ const db = require('../models');
 
 const Timeline = db.timeline;
 
-// Create and Save a new Timeline
 // TODO:
-// - Add async and await to functions
-// - Add ownerID and content to new Timelines
+// - Add content to new Timelines
 exports.create = (req, res) => {
 	// Validate Request
 	if (!req.body.title || !req.body.description) {
@@ -48,6 +46,24 @@ exports.findAll = (req, res) => {
 		.catch((err) => {
 			res.status(500).send({
 				message: err.message || 'Some error occured while retrieving Timelines.',
+			});
+		});
+};
+
+exports.findByUserId = (req, res) => {
+	const userId = req.params.userId;
+
+	Timeline.find({ ownerId: userId })
+		.then((data) => {
+			!data
+				? res
+						.status(404)
+						.send({ message: 'Could not find any Timelines for user Id = ' + userId })
+				: res.send(data);
+		})
+		.catch((err) => {
+			res.status(500).send({
+				message: err.message || 'Error retrieving Timlines for user Id = ' + userId,
 			});
 		});
 };
