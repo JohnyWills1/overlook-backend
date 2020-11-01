@@ -30,6 +30,19 @@ exports.create = (req, res) => {
 		});
 };
 
+// Upload an image to S3
+exports.imageUpload = (req, res) => {
+	try {
+		if (!req.file) {
+			throw new Error('Image is not presented!');
+		}
+
+		return res.json({ message: 'Image recieved and uploaded!' });
+	} catch (error) {
+		return res.status(422).send({ message: error.message });
+	}
+};
+
 // Find all Timelines from the database
 exports.findAll = (req, res) => {
 	const title = req.query.title;

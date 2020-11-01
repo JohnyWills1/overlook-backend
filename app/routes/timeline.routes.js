@@ -8,6 +8,9 @@ module.exports = (app) => {
 	// Find all published Timelines
 	router.get('/published', [FBAuth], timelines.findAllPublished);
 
+	// Image Upload
+	router.post('/image', [FBAuth], timelines.imageUpload);
+
 	// Create a new Timeline
 	router.post('/', [FBAuth], timelines.create);
 
