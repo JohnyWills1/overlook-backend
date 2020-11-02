@@ -31,15 +31,42 @@ exports.create = (req, res) => {
 };
 
 // Upload an image to S3
-exports.imageUpload = (req, res) => {
+exports.imageUpload = async (req, res) => {
 	try {
-		if (!req.file) {
-			throw new Error('Image is not presented!');
-		}
+		console.log('--Image Upload Endpoint Hit--');
+		if (!req.files) {
+			res.send({
+				status: false,
+				message: 'No file uploaded',
+			});
+		} else {
+			if (req.files.image.length == undefined) {
+				// Single file upload
+				let image = req.files.image;
 
-		return res.json({ message: 'Image recieved and uploaded!' });
+				res.send({
+					status: true,
+					message: 'File is uploaded',
+					data: {
+						name: image.name,
+						mimetype: image.mimetype,
+						size: image.size,
+					},
+				});
+			} else {
+				// Multiple file upload
+				let images = req.files.image;
+				console.log('--- Multiple Images Array ---');
+
+				res.send({
+					status: true,
+					message: 'Files are uploaded',
+					data: images,
+				});
+			}
+		}
 	} catch (error) {
-		return res.status(422).send({ message: error.message });
+		return res.status(500).send(error);
 	}
 };
 
