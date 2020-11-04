@@ -5,7 +5,7 @@ const fileUpload = require('express-fileupload');
 
 const app = express();
 
-var corsOptions = {
+const corsOptions = {
 	origin: 'http://localhost:3000',
 };
 
@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-	res.json({ message: 'Welcome to Overlook.' });
+	res.json({ message: 'Welcome to Overlooks API.' });
 });
 
 require('./app/routes/timeline.routes')(app);

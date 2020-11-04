@@ -1,6 +1,20 @@
 const db = require('../models');
-
 const Timeline = db.timeline;
+const {
+	aws_access_key_id,
+	aws_secret_access_key,
+	aws_bucket_name,
+} = require('../config/aws.config.js');
+
+const AWS = require('aws-sdk');
+// AWS s3 bucket connection details
+AWS.config.update({
+	region: 'eu-west-2',
+	accessKeyId: aws_access_key_id,
+	secretAccessKey: aws_secret_access_key,
+});
+
+const s3 = new AWS.S3();
 
 // TODO:
 // - Add content to new Timelines
@@ -44,14 +58,27 @@ exports.imageUpload = async (req, res) => {
 				// Single file upload
 				let image = req.files.image;
 
-				res.send({
-					status: true,
-					message: 'File is uploaded',
-					data: {
-						name: image.name,
-						mimetype: image.mimetype,
-						size: image.size,
-					},
+				const params = {
+					Bucket: aws_bucket_name,
+					Key: image.name,
+					Body: image.data,
+				};
+
+				s3.upload(params, (err, data) => {
+					if (err) {
+						console.log('AWS Error - ', err);
+					} else {
+						console.log('Upload Success', data);
+						res.send({
+							status: true,
+							message: 'File is uploaded',
+							data: {
+								name: data.Key,
+								location: data.Location,
+								size: image.size,
+							},
+						});
+					}
 				});
 			} else {
 				// Multiple file upload
