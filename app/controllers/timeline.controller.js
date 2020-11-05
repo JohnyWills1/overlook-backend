@@ -62,6 +62,7 @@ exports.imageUpload = async (req, res) => {
 					Bucket: aws_bucket_name,
 					Key: image.name,
 					Body: image.data,
+					ACL: 'public-read',
 				};
 
 				s3.upload(params, (err, data) => {
@@ -82,13 +83,27 @@ exports.imageUpload = async (req, res) => {
 				});
 			} else {
 				// Multiple file upload
+				console.log('Multiple Files');
 				let images = req.files.image;
-				console.log('--- Multiple Images Array ---');
+				var uImages = [];
 
-				res.send({
-					status: true,
-					message: 'Files are uploaded',
-					data: images,
+				images.map((item) => {
+					const params = {
+						Bucket: aws_bucket_name,
+						Key: item.name,
+						Body: item.data,
+					};
+
+					s3.upload(params, (err, data) => {
+						if (err) {
+							console.log('Multiple File Upload Error - ', err);
+						} else {
+							uImages.push(data);
+							if (uImages.length == images.length) {
+								res.json({ message: 'Successfully Uploaded All Files', data: uImages });
+							}
+						}
+					});
 				});
 			}
 		}
