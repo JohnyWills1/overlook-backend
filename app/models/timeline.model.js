@@ -1,4 +1,13 @@
+const { Schema } = require('mongoose');
+
 module.exports = (mongoose) => {
+	const content = new Schema({
+		comment: [String],
+		image_url: {
+			type: String,
+		},
+	});
+
 	const Timeline = mongoose.model(
 		'timeline',
 		mongoose.Schema(
@@ -8,12 +17,7 @@ module.exports = (mongoose) => {
 					required: true,
 				},
 				description: String,
-				content: [
-					{
-						image: String,
-						comment: String,
-					},
-				],
+				content: [content],
 				published: Boolean,
 				ownerId: {
 					type: String,

@@ -24,11 +24,14 @@ exports.create = (req, res) => {
 		return res.status(400).send({ message: 'Content cannot be empty!' });
 	}
 
+	console.log('Content -', req.body.content);
+
 	// Create Timeline Object to be saved
 	const timeline = new Timeline({
 		title: req.body.title,
 		description: req.body.description,
 		ownerId: req.body.ownerId,
+		content: req.body.content,
 		published: false,
 	});
 
