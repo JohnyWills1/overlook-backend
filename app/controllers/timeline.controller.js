@@ -24,8 +24,6 @@ exports.create = (req, res) => {
 		return res.status(400).send({ message: 'Content cannot be empty!' });
 	}
 
-	console.log('Content -', req.body.content);
-
 	// Create Timeline Object to be saved
 	const timeline = new Timeline({
 		title: req.body.title,
@@ -50,7 +48,6 @@ exports.create = (req, res) => {
 // Upload an image to S3
 exports.imageUpload = async (req, res) => {
 	try {
-		console.log('--Image Upload Endpoint Hit--');
 		if (!req.files) {
 			res.send({
 				status: false,
@@ -86,7 +83,6 @@ exports.imageUpload = async (req, res) => {
 				});
 			} else {
 				// Multiple file upload
-				console.log('Multiple Files');
 				let images = req.files.image;
 				var uImages = [];
 
@@ -156,7 +152,7 @@ exports.findByUserId = (req, res) => {
 // Find a single Timeline with an ID
 exports.findOne = (req, res) => {
 	const id = req.params.id;
-	
+
 	Timeline.findById(id)
 		.then((data) => {
 			!data
