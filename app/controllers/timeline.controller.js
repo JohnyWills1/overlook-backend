@@ -156,7 +156,7 @@ exports.findByUserId = (req, res) => {
 // Find a single Timeline with an ID
 exports.findOne = (req, res) => {
 	const id = req.params.id;
-
+	
 	Timeline.findById(id)
 		.then((data) => {
 			!data

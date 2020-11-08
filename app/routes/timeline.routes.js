@@ -18,13 +18,13 @@ module.exports = (app) => {
 	router.get('/', [FBAuth], timelines.findAll);
 
 	// Find All Timelines with User ID
-	router.get('/:userId', [FBAuth], timelines.findByUserId);
+	router.get('/uid/:userId', [FBAuth], timelines.findByUserId);
 
 	// Find a single Timeline with the ID defined
 	router.get('/:id', [FBAuth], timelines.findOne);
 
 	//Find a Timelines by Title
-	router.get('/:title', [FBAuth], timelines.findByTitle);
+	router.get('/title/:title', [FBAuth], timelines.findByTitle);
 
 	// Update a specific Timeline with a given ID
 	router.put('/:id', [FBAuth], timelines.update);
