@@ -91,6 +91,7 @@ exports.imageUpload = async (req, res) => {
 						Bucket: aws_bucket_name,
 						Key: item.name,
 						Body: item.data,
+						ACL: 'public-read',
 					};
 
 					s3.upload(params, (err, data) => {
