@@ -2,7 +2,11 @@ const { Schema } = require('mongoose');
 
 module.exports = (mongoose) => {
 	const content = new Schema({
-		comment: [String],
+		comments: [
+			{
+				comment: String,
+			},
+		],
 		image_url: {
 			type: String,
 		},
