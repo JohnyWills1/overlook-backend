@@ -201,7 +201,10 @@ exports.update = (req, res) => {
 				? res.status(404).send({
 						message: `Cannot update Timeline with id=${id}. Maybe the Timeline was not found!`,
 				  })
-				: res.send({ message: 'Timeline was updated successfully.' });
+				: res.send({
+						message: 'Timeline was updated successfully. Edited fields returned:',
+						data: req.body,
+				  });
 		})
 		.catch((err) => {
 			res.status(500).send({
